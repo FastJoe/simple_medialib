@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple media gallery</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<!-- Static navbar -->
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Simple media gallery</a>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+      <% if user_signed_in? %>
+          <li class="navbar-text">Hello, <%=current_user.email%>!</li>
+          <li><%= link_to 'Sign out', destroy_user_session_path, method: :delete%></li>
+      <% else %>
+          <li class="navbar-text">Hello, Guest!</li>
+          <li class="<%=(request.path == new_user_session_path ? 'active' : '')%>">  <%= link_to 'Sign in', new_user_session_path%></li>
+          <li class="<%=(request.path == new_user_registration_path ? 'active' : '')%>"> <%= link_to 'Sign up', new_user_registration_path %></li>
+      <% end %>
+    </ul>
+  </div>
+  <!--/.nav-collapse -->
+  </div>
+</nav>
+<div class="container">
+  <% flash.each do |name, msg| %>
+      <%= content_tag :div, :class => "alert alert-#{ name.to_sym == :error ? "danger" : "success" } alert-dismissable" do %>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <%= msg %>
+      <% end %>
+  <% end %>
+  <%= yield %>
+</div>
+
+<!-- /container -->
+</body>
+</html>
