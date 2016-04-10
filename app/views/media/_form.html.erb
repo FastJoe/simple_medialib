@@ -1,0 +1,16 @@
+<% url = @medium.new_record? ? media_path : medium_path(@medium) %>
+<%= simple_form_for(@medium, as: :medium, url: url) do |f| %>
+    <%= f.error_notification %>
+    <%= f.input :name %>
+    <%= f.input :description %>
+    <%= f.simple_fields_for :resource, @medium.resource do |resource_fields| %>
+        <% resource_type = resource_fields.object.class.name.demodulize.downcase%>
+        <% if f.object.new_record? %>
+            <%= hidden_field_tag 'resource[type]', resource_type %>
+        <% end %>
+        <%= render partial: "media/types/#{resource_type}/fields", locals: {form: f, fields: resource_fields} %>
+    <% end %>
+    <div class="form-actions">
+      <%= f.button :submit %>
+    </div>
+<% end %>

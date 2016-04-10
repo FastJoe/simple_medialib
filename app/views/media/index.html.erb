@@ -1,0 +1,36 @@
+<% %w(link image).each do |type| %>
+    <%= link_to "New #{type}", new_medium_path(type: type), class: 'btn btn-default'%>
+<% end %>
+<table class="table">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Content</th>
+    <th></th>
+  </tr>
+
+  </thead>
+  <tbody>
+  <% @media.each do |medium| %>
+      <tr>
+        <td><%= medium.name %></td>
+        <td><%= medium.description %></td>
+        <td>
+
+          <%= case medium.resource_type
+                when MediaTypes::Link.name
+                  link_to(medium.resource.url)
+              end %>
+        </td>
+        <td>
+          <%= link_to 'Edit', edit_medium_path(medium) %>
+          <%= link_to 'Delete', medium_path(medium), method: :delete %>
+        </td>
+      </tr>
+  <% end %>
+
+  </tbody>
+
+
+</table>
